@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support — PictoSearch</title>
+    <meta name="description" content="Get help with PictoSearch. FAQ, tips, and contact information.">
+    <link rel="icon" href="images/app-icon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --bg-subtle: #f8f9fb;
+            --text: #1a1a2e;
+            --text-secondary: #6b7280;
+            --indigo: #5856D6;
+            --indigo-light: #ededfc;
+            --teal: #2EBFA0;
+            --teal-light: #e6f9f4;
+            --border: #e5e7eb;
+            --border-light: #f0f1f3;
+            --gradient: linear-gradient(135deg, #5856D6, #2EBFA0);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* Nav */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 14px 0;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light);
+        }
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text);
+        }
+        .logo img { width: 32px; height: 32px; border-radius: 8px; }
+        .nav-links { display: flex; gap: 28px; list-style: none; }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); }
+        .nav-cta { display: inline-flex; align-items: center; }
+        .nav-cta img { height: 36px; width: auto; }
+
+        /* Page Header */
+        .page-header {
+            padding: 140px 0 64px;
+            text-align: center;
+        }
+        .page-header h1 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 900;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+        .page-header .tagline {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        /* Contact */
+        .contact-section { padding: 0 0 72px; }
+        .contact-card {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        .contact-card .contact-icon { font-size: 2rem; margin-bottom: 12px; }
+        .contact-card h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 6px; }
+        .contact-card .email {
+            color: var(--indigo);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .contact-card .response-time {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--indigo);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+        .contact-btn:hover { opacity: 0.9; }
+
+        /* FAQ */
+        .faq-section { padding: 0 0 80px; }
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .section-header h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .faq-list {
+            max-width: 660px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .faq-item {
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        .faq-item.open { border-color: var(--border); }
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.92rem;
+            user-select: none;
+            transition: color 0.2s;
+        }
+        .faq-question:hover { color: var(--indigo); }
+        .faq-arrow {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            transition: transform 0.3s;
+        }
+        .faq-item.open .faq-arrow { transform: rotate(180deg); }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        .faq-item.open .faq-answer { max-height: 300px; }
+        .faq-answer-inner {
+            padding: 0 20px 16px;
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.7;
+        }
+
+        /* Tips */
+        .tips-section { padding: 0 0 80px; }
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            max-width: 780px;
+            margin: 0 auto;
+        }
+        .tip-card {
+            text-align: center;
+            padding: 28px 20px;
+            border-radius: 14px;
+            border: 1px solid var(--border-light);
+            transition: box-shadow 0.3s;
+        }
+        .tip-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.05); }
+        .tip-icon { font-size: 1.6rem; margin-bottom: 12px; }
+        .tip-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+        .tip-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border-light);
+        }
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-links { display: flex; gap: 24px; list-style: none; }
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--text); }
+        .copyright { color: var(--text-secondary); font-size: 0.78rem; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .page-header { padding: 110px 0 48px; }
+            .tips-grid { grid-template-columns: 1fr; max-width: 360px; }
+            .contact-card { padding: 28px 20px; }
+            footer .container {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+            .footer-links { flex-wrap: wrap; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="images/app-icon.png" alt="PictoSearch">
+                PictoSearch
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#features">Features</a></li>
+                <li><a href="privacy-policy.html">Privacy</a></li>
+            </ul>
+            <a href="#" class="nav-cta">
+                <img src="images/app-store-badge.svg" alt="Download on the App Store">
+            </a>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <h1>Support Center</h1>
+        <p class="tagline">Everything you need to get the most out of PictoSearch.</p>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact-section reveal">
+        <div class="container">
+            <div class="contact-card">
+                <div class="contact-icon">💬</div>
+                <h2>Need help?</h2>
+                <p class="email">pictosearch@pictoapps.org</p>
+                <p class="response-time">Usually responds within 24 hours</p>
+                <a href="mailto:pictosearch@pictoapps.org" class="contact-btn">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    Send Email
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section reveal">
+        <div class="container">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">How do I download the pictogram catalog?<span class="faq-arrow">&#9662;</span></div>
+                    <div class="faq-answer"><div class="faq-answer-inner">When you first open PictoSearch, the onboarding flow guides you through selecting your languages and downloading the catalog. Choose at least one language, pick your preferred skin tone and hair color defaults, and the app will download all pictogram metadata. Images download in the background. You can start searching as soon as the metadata is ready.</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">How does the search work?<span class="faq-arrow">&#9662;</span></div>
+                    <div class="faq-answer"><div class="faq-answer-inner">Type one or more words separated by commas in the search bar (e.g., "house, dog, water"). PictoSearch finds matching pictograms for each word and displays them in a grid. All searching happens locally on your device, so it works without an internet connection.</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">How do I customize a pictogram?<span class="faq-arrow">&#9662;</span></div>
+                    <div class="faq-answer"><div class="faq-answer-inner">Tap any pictogram in your search results to open the customizer. You can change skin tone (5 options), hair color (7 options), action tense (past, present, future), toggle plural mode, or mark it as crossed out. The preview updates in real time.</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">How do I save pictograms to my camera roll?<span class="faq-arrow">&#9662;</span></div>
+                    <div class="faq-answer"><div class="faq-answer-inner">Tap the "Save All to Camera Roll" button at the bottom of the screen. PictoSearch saves every pictogram in your current search with your chosen customizations. The app will ask for camera roll permission the first time.</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Can I add more languages later?<span class="faq-arrow">&#9662;</span></div>
+                    <div class="faq-answer"><div class="faq-answer-inner">Yes! Go to Settings and tap "Add Language." You can download additional languages at any time and delete languages you no longer need. At least one language must remain installed.</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">How much storage does PictoSearch use?<span class="faq-arrow">&#9662;</span></div>
+                    <div class="faq-answer"><div class="faq-answer-inner">The full catalog with all images for one language uses approximately 200-300 MB. You can check exactly how much space is being used in Settings, which shows the pictogram count, downloaded images, and total disk usage.</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Does PictoSearch work offline?<span class="faq-arrow">&#9662;</span></div>
+                    <div class="faq-answer"><div class="faq-answer-inner">Yes! After the initial catalog download, searching works completely offline. You only need internet to download the catalog, add new languages, update the catalog, or fetch customized variants that haven't been cached yet.</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">What are ARASAAC pictograms?<span class="faq-arrow">&#9662;</span></div>
+                    <div class="faq-answer"><div class="faq-answer-inner">ARASAAC is a pictogram library created by Sergio Palao for the Government of Aragon (Spain). It's the most widely used pictogram set in augmentative and alternative communication (AAC) worldwide, distributed under a Creative Commons BY-NC-SA license.</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tips -->
+    <section class="tips-section reveal">
+        <div class="container">
+            <div class="section-header">
+                <h2>Quick Tips</h2>
+            </div>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">🔤</div>
+                    <h3>Use Commas</h3>
+                    <p>Separate words with commas to find multiple pictograms at once. "eat, drink, sleep" returns all three.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🎨</div>
+                    <h3>Set Defaults</h3>
+                    <p>Set your preferred skin tone and hair color in Settings so every search uses your defaults.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">📱</div>
+                    <h3>Batch Save</h3>
+                    <p>Build your full search query first, then tap "Save All" once. Much faster than one by one.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="images/app-icon.png" alt="PictoSearch">
+                PictoSearch
+            </a>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                <li><a href="mailto:pictosearch@pictoapps.org">Contact</a></li>
+            </ul>
+            <p class="copyright">&copy; 2026 PictoApps. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.reveal').forEach(el => {
+            new IntersectionObserver(([e]) => {
+                if (e.isIntersecting) e.target.classList.add('visible');
+            }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }).observe(el);
+        });
+
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => {
+                const item = q.parentElement;
+                document.querySelectorAll('.faq-item').forEach(i => { if (i !== item) i.classList.remove('open'); });
+                item.classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+</html>

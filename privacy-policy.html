@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — PictoSearch</title>
+    <meta name="description" content="PictoSearch privacy policy. Learn how we handle your data.">
+    <link rel="icon" href="images/app-icon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --bg-subtle: #f8f9fb;
+            --text: #1a1a2e;
+            --text-secondary: #6b7280;
+            --indigo: #5856D6;
+            --indigo-light: #ededfc;
+            --teal: #2EBFA0;
+            --teal-light: #e6f9f4;
+            --border: #e5e7eb;
+            --border-light: #f0f1f3;
+            --gradient: linear-gradient(135deg, #5856D6, #2EBFA0);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Nav */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 14px 0;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light);
+        }
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text);
+        }
+        .logo img { width: 32px; height: 32px; border-radius: 8px; }
+        .nav-links { display: flex; gap: 28px; list-style: none; }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); }
+        .nav-cta { display: inline-flex; align-items: center; }
+        .nav-cta img { height: 36px; width: auto; }
+
+        /* Page Header */
+        .page-header {
+            padding: 140px 0 48px;
+            text-align: center;
+        }
+        .page-header h1 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 900;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+        .page-header .tagline {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+        }
+        .page-header .last-updated {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        /* Policy */
+        .policy-content {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+        .policy-card {
+            background: var(--bg);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 40px;
+        }
+        .policy-card .intro {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .policy-section { margin-bottom: 28px; }
+        .policy-section:last-child { margin-bottom: 0; }
+        .policy-section h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .policy-section p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+        .policy-section p:last-child { margin-bottom: 0; }
+        .policy-section ul {
+            list-style: none;
+            margin: 8px 0;
+        }
+        .policy-section ul li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            padding: 4px 0;
+        }
+        .policy-section ul li::before {
+            content: '\00d7';
+            color: #ef4444;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .policy-section ul.check li::before {
+            content: '\2713';
+            color: var(--teal);
+        }
+        .policy-section a {
+            color: var(--indigo);
+            text-decoration: none;
+        }
+        .policy-section a:hover { text-decoration: underline; }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border-light);
+        }
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-links { display: flex; gap: 24px; list-style: none; }
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--text); }
+        .copyright { color: var(--text-secondary); font-size: 0.78rem; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .page-header { padding: 110px 0 36px; }
+            .policy-card { padding: 24px 18px; }
+            footer .container {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+            .footer-links { flex-wrap: wrap; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="images/app-icon.png" alt="PictoSearch">
+                PictoSearch
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="support.html">Support</a></li>
+                <li><a href="index.html#features">Features</a></li>
+            </ul>
+            <a href="#" class="nav-cta">
+                <img src="images/app-store-badge.svg" alt="Download on the App Store">
+            </a>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <h1>Privacy Policy</h1>
+        <p class="tagline">Your privacy matters. Here's how we protect it.</p>
+        <p class="last-updated">Last updated: March 25, 2026</p>
+    </section>
+
+    <div class="policy-content">
+        <div class="policy-card">
+            <p class="intro">PictoSearch is built with privacy in mind. We collect minimal, anonymous analytics to improve the app. We never collect personal information, and your pictogram data stays on your device.</p>
+
+            <div class="policy-section">
+                <h2>Overview</h2>
+                <p>PictoSearch is a free pictogram search and customization tool that downloads the ARASAAC catalog to your device for offline use. This policy explains what data the app collects and how it's used.</p>
+            </div>
+
+            <div class="policy-section">
+                <h2>Data We Don't Collect</h2>
+                <p>PictoSearch does <strong>not</strong> collect any of the following:</p>
+                <ul>
+                    <li>Personal identification information (name, email, phone)</li>
+                    <li>Location data</li>
+                    <li>Device identifiers for advertising</li>
+                    <li>Search queries or usage patterns linked to your identity</li>
+                    <li>Photos or camera roll content</li>
+                    <li>Any data from other apps on your device</li>
+                </ul>
+            </div>
+
+            <div class="policy-section">
+                <h2>Anonymous Analytics</h2>
+                <p>PictoSearch uses <a href="https://telemetrydeck.com" target="_blank" rel="noopener">TelemetryDeck</a> to collect anonymous, aggregated analytics. TelemetryDeck is privacy-first: no personal data, no cookies, no cross-app tracking. The analytics include:</p>
+                <ul class="check">
+                    <li>App launch events (to measure active users)</li>
+                    <li>Which languages are downloaded (to prioritize support)</li>
+                    <li>Feature usage counts (search, batch save, customization)</li>
+                    <li>Onboarding completion rates</li>
+                </ul>
+                <p>All data is anonymous and cannot be linked to any individual. Learn more at <a href="https://telemetrydeck.com/privacy" target="_blank" rel="noopener">telemetrydeck.com/privacy</a>.</p>
+            </div>
+
+            <div class="policy-section">
+                <h2>Local Storage</h2>
+                <p>All pictogram data (metadata, images, preferences) is stored locally on your device. Data never leaves your device unless you save pictograms to your camera roll.</p>
+            </div>
+
+            <div class="policy-section">
+                <h2>Network Requests</h2>
+                <p>PictoSearch connects to the internet only for:</p>
+                <ul class="check">
+                    <li>Downloading the ARASAAC pictogram catalog</li>
+                    <li>Fetching customized pictogram variants from the ARASAAC API</li>
+                    <li>Sending anonymous analytics to TelemetryDeck</li>
+                </ul>
+                <p>No personal data is transmitted in any of these requests.</p>
+            </div>
+
+            <div class="policy-section">
+                <h2>No Account Required</h2>
+                <p>PictoSearch does not require an account, sign in, or any personal information. All features are available immediately after downloading the catalog.</p>
+            </div>
+
+            <div class="policy-section">
+                <h2>Children's Privacy</h2>
+                <p>PictoSearch does not knowingly collect personal information from anyone, including children under 13. The app is designed for people of all ages and operates without requiring any personal data.</p>
+            </div>
+
+            <div class="policy-section">
+                <h2>Third-Party Services</h2>
+                <ul class="check">
+                    <li><strong>ARASAAC API</strong> — pictogram metadata and images. <a href="https://arasaac.org/privacy-policy" target="_blank" rel="noopener">Privacy policy</a></li>
+                    <li><strong>TelemetryDeck</strong> — anonymous analytics. <a href="https://telemetrydeck.com/privacy" target="_blank" rel="noopener">Privacy policy</a></li>
+                </ul>
+                <p>No other third-party SDKs, advertising networks, or tracking services are used.</p>
+            </div>
+
+            <div class="policy-section">
+                <h2>Changes to This Policy</h2>
+                <p>Updates will be reflected in the "Last updated" date above. We encourage you to review this page periodically.</p>
+            </div>
+
+            <div class="policy-section">
+                <h2>Contact Us</h2>
+                <p>Questions? Reach us at <a href="mailto:pictosearch@pictoapps.org">pictosearch@pictoapps.org</a>.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="images/app-icon.png" alt="PictoSearch">
+                PictoSearch
+            </a>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="support.html">Support</a></li>
+                <li><a href="mailto:pictosearch@pictoapps.org">Contact</a></li>
+            </ul>
+            <p class="copyright">&copy; 2026 PictoApps. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

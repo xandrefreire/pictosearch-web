@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PictoSearch — AAC Pictogram Search</title>
+    <meta name="description" content="Search, customize, and save ARASAAC pictograms offline. 12,000+ pictograms, 17 languages, skin tones, hair colors. Free for iOS.">
+    <meta property="og:title" content="PictoSearch — AAC Pictogram Search">
+    <meta property="og:description" content="Search thousands of pictograms offline. Customize and save them all at once.">
+    <meta property="og:image" content="images/app-icon.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PictoSearch — AAC Pictogram Search">
+    <meta name="twitter:description" content="Search thousands of pictograms offline. Customize and save them all at once.">
+    <link rel="icon" href="images/app-icon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --bg-subtle: #f8f9fb;
+            --bg-card: #ffffff;
+            --text: #1a1a2e;
+            --text-secondary: #6b7280;
+            --indigo: #5856D6;
+            --indigo-light: #ededfc;
+            --teal: #2EBFA0;
+            --teal-light: #e6f9f4;
+            --border: #e5e7eb;
+            --border-light: #f0f1f3;
+            --gradient: linear-gradient(135deg, #5856D6, #2EBFA0);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Nav */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 14px 0;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light);
+        }
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text);
+        }
+        .logo img { width: 32px; height: 32px; border-radius: 8px; }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); }
+
+        .nav-cta { display: inline-flex; align-items: center; }
+        .nav-cta img { height: 36px; width: auto; }
+
+        /* Hero */
+        .hero {
+            padding: 160px 0 80px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: clamp(2.4rem, 5vw, 3.6rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -0.03em;
+        }
+        .hero h1 .gradient {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero .subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 540px;
+            margin: 0 auto 32px;
+            line-height: 1.7;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .app-store-badge {
+            display: inline-flex;
+            transition: transform 0.2s;
+        }
+        .app-store-badge:hover { transform: translateY(-2px); }
+        .app-store-badge img { height: 48px; width: auto; }
+        .app-store-badge.small img { height: 36px; }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text);
+            padding: 12px 22px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1.5px solid var(--border);
+            transition: all 0.2s;
+            height: 48px;
+        }
+        .btn-secondary:hover {
+            border-color: var(--indigo);
+            color: var(--indigo);
+        }
+
+        /* Search demo */
+        .search-demo-section {
+            padding: 0 0 64px;
+            display: flex;
+            justify-content: center;
+        }
+        .search-demo {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .search-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+        .search-pill .emoji { font-size: 1.1rem; }
+        .search-op {
+            color: var(--indigo);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .search-pill.result {
+            border-color: var(--teal);
+            background: var(--teal-light);
+            color: var(--teal);
+            font-weight: 600;
+        }
+
+        /* Stats */
+        .stats {
+            padding: 48px 0;
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+            background: var(--bg-subtle);
+        }
+        .stats .container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            font-weight: 900;
+            color: var(--indigo);
+            line-height: 1.2;
+        }
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* Section header */
+        .section-header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+        .section-header h2 {
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* How it works */
+        .how-it-works { padding: 96px 0; }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .step-card {
+            text-align: center;
+            padding: 36px 24px;
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            background: var(--bg);
+            transition: box-shadow 0.3s;
+        }
+        .step-card:hover {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+        }
+        .step-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--indigo-light);
+            color: var(--indigo);
+            font-weight: 800;
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+        .step-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .step-card p {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.65;
+        }
+
+        /* Features */
+        .features {
+            padding: 96px 0;
+            background: var(--bg-subtle);
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .feature-card {
+            background: var(--bg);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid var(--border-light);
+            transition: box-shadow 0.3s;
+        }
+        .feature-card:hover {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+        }
+        .feature-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 1.2rem;
+        }
+        .feature-icon.indigo { background: var(--indigo-light); }
+        .feature-icon.teal { background: var(--teal-light); }
+        .feature-icon.orange { background: #fef3e2; }
+        .feature-icon.cyan { background: #e0f7fa; }
+        .feature-icon.green { background: #e6f9f0; }
+        .feature-icon.pink { background: #fce4ec; }
+
+        .feature-card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.65;
+        }
+
+        /* Screenshots */
+        .screenshots { padding: 96px 0; }
+        .screenshots-scroll {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            overflow-x: auto;
+            padding: 8px 24px;
+            scrollbar-width: none;
+        }
+        .screenshots-scroll::-webkit-scrollbar { display: none; }
+        .screenshot-item { flex-shrink: 0; width: 220px; }
+        .screenshot-frame {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .screenshot-frame:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+        }
+        .screenshot-frame img { width: 100%; display: block; }
+        .screenshot-placeholder {
+            width: 100%;
+            aspect-ratio: 9 / 19.5;
+            background: var(--bg-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .screenshot-item p {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* Languages */
+        .languages {
+            padding: 96px 0;
+            background: var(--bg-subtle);
+        }
+        .lang-grid {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+        .lang-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg);
+            border: 1px solid var(--border-light);
+            padding: 8px 14px;
+            border-radius: 40px;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .lang-pill .flag { font-size: 1rem; }
+
+        /* Pricing */
+        .pricing { padding: 96px 0; }
+        .pricing-card-single {
+            background: var(--bg);
+            border-radius: 20px;
+            padding: 44px;
+            text-align: center;
+            border: 1.5px solid var(--border);
+            max-width: 420px;
+            margin: 0 auto;
+            transition: box-shadow 0.3s;
+        }
+        .pricing-card-single:hover {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+        }
+        .pricing-badge {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            background: var(--teal-light);
+            color: var(--teal);
+        }
+        .pricing-card-single h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .pricing-card-single .price {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin: 16px 0;
+            color: var(--indigo);
+        }
+        .pricing-card-single .price-note {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: -10px;
+            margin-bottom: 24px;
+        }
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+            margin: 20px 0;
+        }
+        .pricing-features li {
+            padding: 9px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .pricing-features li:last-child { border-bottom: none; }
+        .pricing-features li svg {
+            width: 16px; height: 16px;
+            color: var(--teal);
+            flex-shrink: 0;
+        }
+
+        /* CTA */
+        .cta {
+            padding: 96px 0;
+            text-align: center;
+            background: var(--bg-subtle);
+        }
+        .cta h2 {
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 900;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+        .cta h2 .gradient {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .cta p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-bottom: 32px;
+        }
+
+        /* Attribution */
+        .attribution {
+            text-align: center;
+            padding: 0 24px 32px;
+        }
+        .attribution p {
+            color: var(--text-secondary);
+            font-size: 0.72rem;
+            max-width: 560px;
+            margin: 0 auto;
+            line-height: 1.6;
+            opacity: 0.7;
+        }
+        .attribution a { color: var(--text-secondary); }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border-light);
+        }
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--text); }
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .steps-grid { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero { padding: 120px 0 56px; }
+            .hero h1 { font-size: 2rem; }
+            .stats .container { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .section-header { margin-bottom: 40px; }
+            .screenshot-item { width: 180px; }
+            .how-it-works, .features, .screenshots, .languages, .pricing, .cta { padding: 64px 0; }
+            footer .container {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+            .footer-links { flex-wrap: wrap; justify-content: center; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.8rem; }
+            .search-pill { padding: 6px 12px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Nav -->
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="images/app-icon.png" alt="PictoSearch">
+                PictoSearch
+            </a>
+            <ul class="nav-links">
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#screenshots">Screenshots</a></li>
+                <li><a href="support.html">Support</a></li>
+            </ul>
+            <a href="#" class="nav-cta app-store-badge small">
+                <img src="images/app-store-badge.svg" alt="Download on the App Store">
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>Search, <span class="gradient">Customize</span><br>& Save Pictograms</h1>
+            <p class="subtitle">Download the full ARASAAC catalog once. Search thousands of pictograms offline, customize them, and save to your camera roll in one tap.</p>
+            <div class="hero-buttons">
+                <a href="#" class="app-store-badge">
+                    <img src="images/app-store-badge.svg" alt="Download on the App Store">
+                </a>
+                <a href="#how-it-works" class="btn-secondary">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search demo -->
+    <div class="search-demo-section reveal">
+        <div class="search-demo">
+            <div class="search-pill"><span class="emoji">🏠</span> house</div>
+            <span class="search-op">,</span>
+            <div class="search-pill"><span class="emoji">🐶</span> dog</div>
+            <span class="search-op">,</span>
+            <div class="search-pill"><span class="emoji">💧</span> water</div>
+            <span class="search-op">=</span>
+            <div class="search-pill result">3 pictograms</div>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <section class="stats reveal">
+        <div class="container">
+            <div>
+                <div class="stat-number" data-target="12000" data-suffix="+">0</div>
+                <div class="stat-label">Pictograms</div>
+            </div>
+            <div>
+                <div class="stat-number" data-target="17">0</div>
+                <div class="stat-label">Languages</div>
+            </div>
+            <div>
+                <div class="stat-number" data-target="5">0</div>
+                <div class="stat-label">Skin Tones</div>
+            </div>
+            <div>
+                <div class="stat-number" data-target="7">0</div>
+                <div class="stat-label">Hair Colors</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Three steps to every pictogram you need</h2>
+                <p>Download once, search offline forever.</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card reveal">
+                    <span class="step-icon">📥</span>
+                    <div class="step-number">1</div>
+                    <h3>Download</h3>
+                    <p>Choose your languages and download the full ARASAAC catalog. Pick default skin tone and hair color during setup.</p>
+                </div>
+                <div class="step-card reveal">
+                    <span class="step-icon">🔍</span>
+                    <div class="step-number">2</div>
+                    <h3>Search</h3>
+                    <p>Type multiple words separated by commas to find all the pictograms you need at once. Everything runs locally.</p>
+                </div>
+                <div class="step-card reveal">
+                    <span class="step-icon">💾</span>
+                    <div class="step-number">3</div>
+                    <h3>Save</h3>
+                    <p>Customize each pictogram with skin tones, hair colors, and more. Save them all to your camera roll with one tap.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Everything you need in one app</h2>
+                <p>Built for speech therapists, educators, and families.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon indigo">🔍</div>
+                    <h3>Offline Search</h3>
+                    <p>The entire ARASAAC catalog on your device. Search by comma-separated keywords with instant results, no internet needed.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon teal">💾</div>
+                    <h3>Batch Save</h3>
+                    <p>Save every pictogram in your search to the camera roll at once. One tap, all done.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon orange">🎨</div>
+                    <h3>Full Customization</h3>
+                    <p>5 skin tones, 7 hair colors, past/present/future actions, plural mode, and crossed-out variants.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon cyan">🌍</div>
+                    <h3>17 Languages</h3>
+                    <p>Spanish, English, French, German, Italian, Portuguese, Catalan, Basque, Galician, and 8 more.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon green">📱</div>
+                    <h3>Camera Roll Export</h3>
+                    <p>Customized pictograms go straight to your photo library. Ready for documents, presentations, or other AAC apps.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon pink">📚</div>
+                    <h3>ARASAAC Catalog</h3>
+                    <p>Over 12,000 pictograms from the ARASAAC library, trusted worldwide by AAC professionals.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screenshots -->
+    <section class="screenshots" id="screenshots">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>See it in action</h2>
+                <p>Search, customize, and save pictograms in seconds.</p>
+            </div>
+        </div>
+        <div class="screenshots-scroll reveal">
+            <div class="screenshot-item">
+                <div class="screenshot-frame"><img src="images/screenshots/01-search.png" alt="Search pictograms by keyword" loading="lazy"></div>
+                <p>Search</p>
+            </div>
+            <div class="screenshot-item">
+                <div class="screenshot-frame"><img src="images/screenshots/02-customizer.png" alt="Customize skin tone, hair color, and more" loading="lazy"></div>
+                <p>Customize</p>
+            </div>
+            <div class="screenshot-item">
+                <div class="screenshot-frame"><img src="images/screenshots/03-camera-roll.png" alt="Pictograms saved to camera roll" loading="lazy"></div>
+                <p>Camera Roll</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Languages -->
+    <section class="languages" id="languages">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>17 languages and counting</h2>
+                <p>Download only the languages you need. Add more at any time.</p>
+            </div>
+            <div class="lang-grid reveal">
+                <div class="lang-pill"><span class="flag">🇪🇸</span> Spanish</div>
+                <div class="lang-pill"><span class="flag">🇬🇧</span> English</div>
+                <div class="lang-pill"><span class="flag">🇫🇷</span> French</div>
+                <div class="lang-pill"><span class="flag">🇩🇪</span> German</div>
+                <div class="lang-pill"><span class="flag">🇮🇹</span> Italian</div>
+                <div class="lang-pill"><span class="flag">🇵🇹</span> Portuguese</div>
+                <div class="lang-pill"><span class="flag">🇪🇸</span> Catalan</div>
+                <div class="lang-pill"><span class="flag">🇪🇸</span> Basque</div>
+                <div class="lang-pill"><span class="flag">🇪🇸</span> Galician</div>
+                <div class="lang-pill"><span class="flag">🇳🇱</span> Dutch</div>
+                <div class="lang-pill"><span class="flag">🇵🇱</span> Polish</div>
+                <div class="lang-pill"><span class="flag">🇷🇴</span> Romanian</div>
+                <div class="lang-pill"><span class="flag">🇨🇳</span> Chinese</div>
+                <div class="lang-pill"><span class="flag">🇸🇦</span> Arabic</div>
+                <div class="lang-pill"><span class="flag">🇧🇬</span> Bulgarian</div>
+                <div class="lang-pill"><span class="flag">🇭🇷</span> Croatian</div>
+                <div class="lang-pill"><span class="flag">🇷🇺</span> Russian</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Completely free</h2>
+                <p>No subscriptions, no in-app purchases, no ads.</p>
+            </div>
+            <div class="pricing-card-single reveal">
+                <div class="pricing-badge">Free Forever</div>
+                <h3>PictoSearch</h3>
+                <div class="price">$0</div>
+                <p class="price-note">No hidden costs.</p>
+                <ul class="pricing-features">
+                    <li>
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        Full ARASAAC catalog (12,000+ pictograms)
+                    </li>
+                    <li>
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        17 languages
+                    </li>
+                    <li>
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        Skin tone & hair color customization
+                    </li>
+                    <li>
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        Batch save to camera roll
+                    </li>
+                    <li>
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        Offline after first download
+                    </li>
+                </ul>
+                <a href="#" class="app-store-badge small" style="margin-top:16px;">
+                    <img src="images/app-store-badge.svg" alt="Download on the App Store">
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="container">
+            <h2>Every <span class="gradient">pictogram</span> you need, one tap away</h2>
+            <p>Download once. Search offline. Save them all.</p>
+            <a href="#" class="app-store-badge">
+                <img src="images/app-store-badge.svg" alt="Download on the App Store">
+            </a>
+        </div>
+    </section>
+
+    <!-- Attribution -->
+    <div class="attribution">
+        <p>Pictograms are the property of the Government of Aragon and were created by Sergio Palao for <a href="https://arasaac.org" target="_blank" rel="noopener">ARASAAC</a>, distributed under a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">Creative Commons BY-NC-SA</a> license.</p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="images/app-icon.png" alt="PictoSearch">
+                PictoSearch
+            </a>
+            <ul class="footer-links">
+                <li><a href="support.html">Support</a></li>
+                <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                <li><a href="mailto:pictosearch@pictoapps.org">Contact</a></li>
+            </ul>
+            <p class="copyright">&copy; 2026 PictoApps. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(el => observer.observe(el));
+
+        // Animated counters
+        const counters = document.querySelectorAll('.stat-number[data-target]');
+        let done = false;
+        new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting && !done) {
+                    done = true;
+                    counters.forEach(el => {
+                        const target = parseInt(el.dataset.target);
+                        const suffix = el.dataset.suffix || '';
+                        const start = performance.now();
+                        (function update(now) {
+                            const p = Math.min((now - start) / 1400, 1);
+                            el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target).toLocaleString() + suffix;
+                            if (p < 1) requestAnimationFrame(update);
+                        })(start);
+                    });
+                }
+            });
+        }, { threshold: 0.3 }).observe(counters[0]);
+    </script>
+</body>
+</html>
